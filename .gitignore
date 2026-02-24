@@ -3,3 +3,16 @@ target
 *.iml
 **/*.iml
 **/.env
+.venv/
+lab1/data/
+lab1/processed/
+lab1/artifacts/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.DS_Store
