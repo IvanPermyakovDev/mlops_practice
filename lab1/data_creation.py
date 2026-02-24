@@ -19,11 +19,7 @@ def save_arrays(path: Path, x: np.ndarray, y: np.ndarray) -> None:
 
 def save_dataset_variants(path: Path, x: np.ndarray, y: np.ndarray, *, seed: int) -> None:
     rng = np.random.default_rng(seed)
-
-    # Main dataset for the next pipeline stages.
     save_arrays(path, x, y)
-
-    # Extra variants to satisfy "several datasets" requirement.
     noisy = x + rng.normal(0.0, 0.2, size=x.shape).astype(np.float32)
     np.save(path / "X_noisy.npy", noisy)
     np.save(path / "y_noisy.npy", y)
@@ -50,10 +46,8 @@ def main() -> None:
     args = parse_args()
     root = Path(args.output_dir)
 
-    # Download real binary dataset from OpenML.
     dataset = fetch_openml(name="breast-w", version=1, as_frame=False, parser="liac-arff")
     x = dataset.data.astype(np.float32)
-    # OpenML breast-w contains missing values in one feature; fill with column means.
     if np.isnan(x).any():
         col_means = np.nanmean(x, axis=0)
         inds = np.where(np.isnan(x))
