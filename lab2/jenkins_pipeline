@@ -1,10 +1,72 @@
 pipeline {
     agent any
+
+    options {
+        timestamps()
+    }
+
+    environment {
+        VENV_DIR = "${WORKSPACE}/.venv-lab2"
+    }
+
     stages {
-     stage('Hello') {
-                steps {
-                    echo 'Hello world'
-                }
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
-     }
+        }
+
+        stage('Prepare Environment') {
+            steps {
+                sh '''
+                    python3 -m venv "$VENV_DIR"
+                    . "$VENV_DIR/bin/activate"
+                    python -m pip install --upgrade pip
+                    python -m pip install -r lab2/requirements.txt
+                '''
+            }
+        }
+
+        stage('Collect Data') {
+            steps {
+                sh '''
+                    . "$VENV_DIR/bin/activate"
+                    python lab2/data_collection.py
+                '''
+            }
+        }
+
+        stage('Preprocess Data') {
+            steps {
+                sh '''
+                    . "$VENV_DIR/bin/activate"
+                    python lab2/data_preprocessing.py
+                '''
+            }
+        }
+
+        stage('Train Model') {
+            steps {
+                sh '''
+                    . "$VENV_DIR/bin/activate"
+                    python lab2/model_training.py
+                '''
+            }
+        }
+
+        stage('Evaluate Model') {
+            steps {
+                sh '''
+                    . "$VENV_DIR/bin/activate"
+                    python lab2/model_evaluation.py | tee lab2/metrics.txt
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'lab2/artifacts/**/*,lab2/data/**/*,lab2/metrics.txt', fingerprint: true
+        }
+    }
 }
