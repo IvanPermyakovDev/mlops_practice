@@ -1,0 +1,8 @@
+services:
+  iris-service:
+    build:
+      context: ..
+      dockerfile: lab3/Dockerfile
+    container_name: lab3-iris-service
+    ports:
+      - "8000:8000"
