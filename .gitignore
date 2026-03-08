@@ -11,6 +11,8 @@ lab2/data/
 lab2/artifacts/
 lab2/metrics.txt
 .venv-lab2/
+.jenkins-home/
+.jenkins-home-2/
 __pycache__/
 *.py[cod]
 *.pyo
