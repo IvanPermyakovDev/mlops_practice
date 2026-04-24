@@ -79,16 +79,3 @@ dvc push
 dvc remote list
 # gdrive  gdrive://1pjuisQNYEow2PQkAOXQ1mEPvNJfET_Rd  (default)
 ```
-
-Если Google блокирует стандартный OAuth-клиент DVC/PyDrive с сообщением
-`Приложение заблокировано`, нужно использовать один из рабочих вариантов:
-
-- создать собственный OAuth client в Google Cloud Console и прописать его через
-  `dvc remote modify gdrive gdrive_client_id ...` и
-  `dvc remote modify gdrive gdrive_client_secret ...`;
-- создать Google service account, выдать ему доступ к папке Drive и прописать
-  путь к JSON-ключу через
-  `dvc remote modify --local gdrive gdrive_service_account_json_file_path <path>`.
-
-JSON-ключи и OAuth secrets нельзя коммитить в репозиторий; они должны храниться
-только в локальном `.dvc/config.local`.
