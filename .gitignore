@@ -4,6 +4,7 @@ target
 **/*.iml
 **/.env
 .venv/
+.venv-lab4/
 lab1/data/
 lab1/processed/
 lab1/artifacts/
